@@ -84,7 +84,7 @@ module.exports = configure(function (ctx) {
       open: true, // opens browser window automatically
       proxy: {
         '/': {
-          target: 'http://localhost:2082/',
+          target: 'http://localhost:7001/',
           changeOrigin: true,
           pathRewrite: {
             '^/': '/'
@@ -111,7 +111,7 @@ module.exports = configure(function (ctx) {
       // Quasar plugins
       plugins: ['Notify','Dialog', 'AppFullscreen', 'LocalStorage', 'Cookies'],
       config: {
-        notify: { position:'center' ,timeout:400}
+        notify: { position:'top' ,timeout:500}
       }
     },
 
