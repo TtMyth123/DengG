@@ -1,0 +1,1 @@
+http://yyz2.666.macao-lottery.com/ServiceAPI/PlaceBet/Loaddata?lotteryType=MCHK6&settingCode=TM,BS,LM&oddstype=A

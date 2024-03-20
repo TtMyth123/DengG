@@ -1,0 +1,8 @@
+http://yyz2.666.macao-lottery.com/ServiceAPI/Intimesheet/listodds?installments=2022212&lotteryType=MCHK6&settingCode=TMS&oddstype=O&zhangcheng=0
+
+http://yyz2.666.macao-lottery.com/ServiceAPI/Intimesheet/listodds?installments=2022212&lotteryType=MCHK6&settingCode=TMS&oddstype=A&zhangcheng=0
+http://yyz2.666.macao-lottery.com/ServiceAPI/Intimesheet/listodds?installments=2022212&lotteryType=MCHK6&settingCode=TMS&oddstype=B&zhangcheng=0
+http://yyz2.666.macao-lottery.com/ServiceAPI/Intimesheet/listodds?installments=2022212&lotteryType=MCHK6&settingCode=TMS&oddstype=C&zhangcheng=0
+http://yyz2.666.macao-lottery.com/ServiceAPI/Intimesheet/listodds?installments=2022212&lotteryType=MCHK6&settingCode=TMS&oddstype=D&zhangcheng=0
+
+{"code":0,"msg":"ok","data":{"State":2,"Msg":"时间","Installments":"2022212","PreLotteryResult":"36,13,11,15,49,20,39","PreInstallments":"2022212","CloseTimeStamp":1659273600,"OpenTimeStamp":1659250800,"PreShengXiaoYear":"虎","ResultTimeStamp":1659274200,"TodayWinLost":0.0,"time":1659333067}}

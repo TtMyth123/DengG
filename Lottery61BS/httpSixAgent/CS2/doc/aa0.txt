@@ -1,0 +1,28 @@
+Request URL: http://yyz2.666.macao-lottery.com/ServiceAPI/Intimesheet/listodds?installments=2022212&lotteryType=MCHK6&settingCode=TMS&oddstype=A&zhangcheng=0
+Request Method: GET
+Status Code: 200 OK
+Remote Address: 127.0.0.1:1081
+Referrer Policy: no-referrer-when-downgrade
+Connection: keep-alive
+Content-Encoding: gzip
+Content-Length: 722
+Content-Type: application/json; charset=utf-8
+Date: Mon, 01 Aug 2022 05:41:09 GMT
+Keep-Alive: timeout=4
+Proxy-Connection: keep-alive
+Server: ZenZGA/1.4
+Vary: Accept-Encoding
+Accept: application/json, text/plain, */*
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IkMwRTYzRTNBNzA3QjQ0REI5N0YxMzE5RjcxNkZEMzlFIiwidHlwIjoiYXQrand0In0.eyJuYmYiOjE2NDYyOTAzNzYsImV4cCI6MTY0NjM2OTU3NiwiaXNzIjoiaHR0cDovLzE3Mi4zMS4xNi40NTo1MDAwL1NlcnZpY2VBUEkvSWRlbnRpdHlTZXJ2ZXIiLCJhdWQiOlsidXNlcl9hcGkiLCJTZWxmU3VwcG9ydCJdLCJjbGllbnRfaWQiOiJjdXN0b21fcHdkcyIsInN1YiI6ImFkbWluIiwiYXV0aF90aW1lIjoxNjQ2MjkwMzc2LCJpZHAiOiJsb2NhbCIsImNsaWVudHZwayI6IjdyTHV4U2VTUkllcmxWRWE4YjEycCIsImp0aSI6IjVCMTM0RkNBQzZENzhDQUVGRDQ3OTFGRkM0NjAyRTYxIiwiaWF0IjoxNjQ2MjkwMzc2LCJzY29wZSI6WyJDb21tYW5kU2NvcGUiLCJ1c2VyX2FwaSIsIm9mZmxpbmVfYWNjZXNzIl0sImFtciI6WyJwd2QiXX0.ThNR2XLjbQbj6xTAoaWimjVCRH_UhFu5l5pMxcwBdD31eE0g2N1_xNxbeaxqKebdLGRwyt2Pw-xqB_OPxu_S2TT2WrAj1e9NpghICk6RqWUjqOHtS-2aPM9mLiNDW3KZ0WBHrJV46o_K7q6joao2mwfm93fn1kOiyxEpR2QCLCX2nyqmBrTjX1EwKBhHR8H30ZEudmADdL0ir0XzFUj0tUH2ddOBAmA4gXjixZGCRIZTvxtM_j7kNC1NzFELHNxrISkzKcaRyC-G9h2-3w7ghSUuJrgglj-EKy2h8-rPotYfJOPUdvCQ3zGFFniTSc60VdK3xTD_A54bz7ZcGWlBvA
+Cookie: ssid1=5057220639886341; PHPSESSION=ryG0NxHNBSvHEOiY1Q3pKg3gp1s5rpA7
+Host: yyz2.666.macao-lottery.com
+Proxy-Connection: keep-alive
+Referer: http://yyz2.666.macao-lottery.com/d1.html
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36
+installments: 2022212
+lotteryType: MCHK6
+settingCode: TMS
+oddstype: A
+zhangcheng: 0

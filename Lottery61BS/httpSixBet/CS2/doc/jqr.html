@@ -1,0 +1,87 @@
+<!DOCTYPE html><html>
+<head><meta charset="utf-8"></head>
+<style type="text/css"></style>
+<script type="text/javascript" src="/__greycdn__/bot_v3.js"></script>
+<script type="text/javascript" src="https://recaptcha.net/recaptcha/api.js"></script>
+<script type="text/javascript">
+    function onSubmit(g_recaptcha_response) {
+
+        document.getElementById("myImg").src = '/__greycdn__/static/tick.png';
+        setTimeout(() => {
+            document.getElementById('__greycdn_recaptcha').value = g_recaptcha_response;
+            document.getElementById("myform").submit();
+        }, 1000);
+
+    }
+</script>
+<body>
+<div id="content">
+    <div id="body">
+        <section class="main">
+            <div id="order1" class="fl1 slt">
+                <div id="container">
+                    <div class="language"></div>
+                    <div class="ant-select ant-select-single ant-select-show-arrow ant-select-show-search width100">
+                        <div class="ant-select-selector width100">
+                                <span class="ant-select-selection-search">
+                                    <div id="input_s" class="ant-select-selection-search-input" id="rc_select_0"></div>
+                                </span>
+                            <span id="select_el_hide"></span>
+                        </div>
+                        <span class="ant-select-arrow" unselectable="on" style="user-select: none;">
+                                <span role="img" class="anticon anticon-down ant-select-suffix">
+                                    <svg viewBox="64 64 896 896" focusable="false" data-icon="down" width="1em" height="1em" fill="currentColor" aria-hidden="true">
+                                        <path d="M884 256h-75c-5.1 0-9.9 2.5-12.9 6.6L512 654.2 227.9 262.6c-3-4.1-7.8-6.6-12.9-6.6h-75c-6.5 0-10.3 7.4-6.5 12.7l352.6 486.1c12.8 17.6 39 17.6 51.7 0l352.6-486.1c3.9-5.3.1-12.7-6.4-12.7z"></path>
+                                    </svg>
+                                </span>
+                            </span>
+                    </div>
+                </div>
+                <div class="container_data"></div>
+            </div>
+
+            <div id="order2" class="fl1 captcha decoyStyle">
+                <div id="captcha_section">
+                    <!--<button class="g-recaptcha"
+                        data-sitekey="6Lfo1WIpAAAAAMYwd5eaRUCYWtfggy6vyLt4PWwW"
+                        data-callback='onSubmit'
+                        data-action='submit'>I am not robot</button>-->
+
+                    <button class="g-recaptcha _btn" data-sitekey="6Lfo1WIpAAAAAMYwd5eaRUCYWtfggy6vyLt4PWwW"
+                            data-callback='onSubmit' data-action='submit'>
+                        <div  class="checkBox">
+                            <div class="img1">
+                                <img id="myImg" src="/__greycdn__/static/untick.png" width="33" height="33">
+                            </div>
+                            <span class="text" id="robot">
+                                    I'm not robot
+                                </span>
+                            <div class="img2">
+                                <img id="recaptchaIcon" src="/__greycdn__/static/recaptcha.png" width="41.32" height="41.2">
+                            </div>
+                        </div>
+                    </button>
+                </div>
+
+                <form action="" method="GET" id="myform">
+                    <input type="hidden" name="controller" value="web_login" /><input type="hidden" name="action" value="ImgCode" /><input type="hidden" name="0.1710568863514969" value="true" /><input type="hidden" name="__greycdn_recaptcha" id="__greycdn_recaptcha" value="" />
+                </form>
+
+            </div>
+
+            <input type="hidden" name="noRecapDescFlag" id="noRecapDescFlag" value="0"/>
+            <div id="order3" style="display:none" class="fl1 decoy decoyStyle"></div>
+        </section>
+        <footer id="footer" style="display:none"></footer>
+    </div>
+</body>
+<script type="text/javascript">
+    document.body.onload = function () {
+        const targetDom = document.getElementById("content");
+        if (!targetDom) return;
+        render();
+    }
+</script>
+
+</html>
+

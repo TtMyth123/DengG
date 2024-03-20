@@ -66,13 +66,6 @@ export default defineComponent({
 
   methods:{
     onClickLogin(){
-      let bb = GetCookie("00A99084001B4A82F4E45837B217ED20AFECF4EF");
-      this.$q.dialog({
-        title: '提示',
-        message: bb,
-        ok: "确定"
-      })
-      return
       let _this = this
       this.$store.dispatch('user/login',this.loginData)
         .then((res)=>{

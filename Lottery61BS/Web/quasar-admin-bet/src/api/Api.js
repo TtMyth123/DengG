@@ -1,6 +1,13 @@
 import request from '../utils/request'
 
 
+export function GetC(query) {
+  return request({
+    url: '/dataapi/getc',
+    method: 'post',
+    params: query
+  })
+}
 export function SaveSiteUserInfo(query) {
   return request({
     url: '/dataapi/savesiteuserinfo',
@@ -23,6 +30,7 @@ export function GetSiteTypeList(query) {
   })
 }
 
+
 export function GetSiteUserInfoList(query) {
   return request({
     url: '/dataapi/getsiteuserinfolist',
@@ -31,13 +39,6 @@ export function GetSiteUserInfoList(query) {
   })
 }
 
-export function GetNumComparisonInfo(query) {
-  return request({
-    url: '/dataapi/getnumcomparisoninfo',
-    method: 'get',
-    params: query
-  })
-}
 
 export function SixLogin(query) {
   return request({
@@ -116,13 +117,6 @@ export function DelBetSiteData(query) {
   })
 }
 
-export function GetC(query) {
-  return request({
-    url: '/dataapi/getc',
-    method: 'post',
-    params: query
-  })
-}
 
 export function SetLotteryType(query) {
   return request({

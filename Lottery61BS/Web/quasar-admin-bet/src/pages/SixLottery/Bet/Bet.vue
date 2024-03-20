@@ -1,195 +1,153 @@
 <template>
   <q-card class="table-bg no-shadow bg-white" bordered>
+    <q-card-section  class="q-pa-none row"  >
+      <q-card class="table-bg bg-white row" bordered>
+        <sqan class="content-center"> 代理：{{AgentUserInfo.UserData.UserName}}</sqan>
+        <div v-if="AgentUserInfo.UserData.IsLogin==0" >
+          <q-btn @click="showAgentLogin(AgentUserInfo.UserData)">登录</q-btn>
+          <q-btn  @click="onClickAgentLogout(AgentUserInfo.UserData)">登出</q-btn>
+        </div>
+        <div  v-else>
+          <q-btn  @click="onClickAgentLogout(AgentUserInfo.UserData)">登出</q-btn>
+        </div>
+         <q-btn @click="onShowEditDialogAgent">修改</q-btn>
+      </q-card>
+      <q-card   style="margin-left:8px"  class="table-bg bg-white row" bordered>
+        <sqan class="text-center">  会员：{{BetUserInfo.UserData.UserName}}</sqan>
+
+
+        <div class="row" v-if="BetUserInfo.UserData.IsLogin==0" >
+          <q-btn   @click="showBetLogin(BetUserInfo.UserData)">登录</q-btn>
+          <q-btn   @click="onClickBetLogout(BetUserInfo.UserData)">登出</q-btn>
+        </div>
+        <div  class="row" v-else>
+          <q-btn   @click="onClickBetLogout(BetUserInfo.UserData)">登出</q-btn>
+        </div>
+        <q-btn @click="onShowEditDialogBet">修改</q-btn>
+      </q-card>
+
+      <q-card  style="margin-left:8px"  class="table-bg bg-white" bordered>
+        <q-btn @click="onClickR">刷新({{RefreshData.AgentData.MaxSecond-RefreshData.AgentData.Second}})</q-btn>
+      </q-card>
+    </q-card-section>
+
+    <q-card-section class="q-pa-none row">
+      <div class="row col q-pa-sm-xs q-gutter-sm" style="max-height: 50px">
+        <div class="q-gutter-sm">
+          <q-radio @update:model-value ="changeConfigDataBetWay" v-model="ConfigData.BetWay" :val="BetWaySelects.Rate" label="比例" />
+          <q-radio @update:model-value ="changeConfigDataBetWay" v-model="ConfigData.BetWay" :val="BetWaySelects.BetM" label="金额" />
+        </div>
+        <div class="q-gutter-sm">
+          <q-radio @update:model-value ="changeConfigDataBetWay" v-model="ConfigData.RateWay" :val="RateWaySelects.Z" label="正" />
+          <q-radio @update:model-value ="changeConfigDataBetWay" v-model="ConfigData.RateWay" :val="RateWaySelects.F" label="反" />
+        </div>
+        <q-input @change="changeConfigDataRate" input-class="text-right" class="col" filled dense mask="########"   v-model.number="ConfigData.Rate">
+          <template v-slot:prepend class="bg-white">
+            <span  class="input_title">比例：</span>
+          </template>
+          <template v-slot:append>
+            %
+          </template>
+        </q-input>
+        <q-select   class="col"  filled style="width: 200px" @update:model-value="changeConfigDataStock" v-model="ConfigData.Stock" :options="StockSelectItems"
+                   dense
+                   option-value="Id"
+                   option-label="Name"
+                   option-disable="inactive"
+                   emit-value
+                   map-options >
+          <template v-slot:prepend>
+            <span class="input_title">方式：</span>
+          </template>
+        </q-select>
+
+        <q-select  class="col"  filled style="width: 200px" @update:model-value="changeConfigDataLotteryType"
+                   v-model="ConfigData.LotteryType" :options="LotteryTInfo.ItemTypes"
+                   dense
+                   option-value="Id"
+                   option-label="Name"
+                   option-disable="inactive"
+                   emit-value
+                   map-options >
+          <template v-slot:prepend>
+            <span class="input_title">彩种：</span>
+          </template>
+        </q-select>
+
+<!--        <q-input  class="col"  filled dense v-model="ConfigData.BetTime1" mask="time" :rules="['time']">-->
+<!--          <template v-slot:prepend class="bg-white">-->
+<!--            <span  class="input_title"  >投注时间1：</span>-->
+<!--          </template>-->
+<!--          <template v-slot:append>-->
+<!--            <q-icon name="access_time" class="cursor-pointer">-->
+<!--              <q-popup-proxy cover transition-show="scale" transition-hide="scale">-->
+<!--                <q-time v-model="ConfigData.BetTime1">-->
+<!--                  <div class="row items-center justify-end">-->
+<!--                    <q-btn v-close-popup label="Close" color="primary" flat />-->
+<!--                  </div>-->
+<!--                </q-time>-->
+<!--              </q-popup-proxy>-->
+<!--            </q-icon>-->
+<!--          </template>-->
+<!--        </q-input>-->
+<!--        <q-input  class="col"  filled dense v-model="ConfigData.BetTime2" mask="time" :rules="['time']">-->
+<!--          <template v-slot:prepend class="bg-white">-->
+<!--            <span class="input_title "  >投注时间2：</span>-->
+<!--          </template>-->
+<!--          <template v-slot:append>-->
+<!--            <q-icon name="access_time" class="cursor-pointer">-->
+<!--              <q-popup-proxy cover transition-show="scale" transition-hide="scale">-->
+<!--                <q-time v-model="ConfigData.BetTime1">-->
+<!--                  <div class="row items-center justify-end">-->
+<!--                    <q-btn v-close-popup label="Close" color="primary" flat />-->
+<!--                  </div>-->
+<!--                </q-time>-->
+<!--              </q-popup-proxy>-->
+<!--            </q-icon>-->
+<!--          </template>-->
+<!--        </q-input>-->
+        <div  class="col">
+          <q-btn @click="onClickBet" label="直接投注"/>
+<!--          <q-btn label="启动"/>-->
+        </div>
+      </div>
+    </q-card-section>
     <q-card-section class="q-pa-none row"  >
-      <div class="col-9 q-pa-none example-row-equal-width">
+      <div class="row col-12">
+        <q-input  input-class="text-right" mask="########" v-model.number="InputData.Datas[i]"
+                 dense    class="input-row-equal-width q-px-sm col" v-for="i in 5">
+          <template v-slot:append>
+            <q-btn  @click="onClickSetBetM(i)" label="填充" />
+          </template>
+          <template v-slot:prepend>
+            <q-btn  @click="onClickSetBetMBaseRate(i)" label="比例金额" />
+          </template>
+        </q-input>
+      </div>
+      <div class="col-12 q-pa-none example-row-equal-width">
         <div class="row" v-for="i in 10">
           <div class="col row" v-for="j in 5">
-            <q-input  reverse-fill-mask mask="########" v-if="j*10 - 10 +i !=50"
-                     @click="onclickSetV(j*10 - 10 +i)"
-                     style="width: 100%; background-color:white" class="col-auto "
-                     dense v-model.number="layout1[ j*10 - 10 +i].v">
+            <q-input  input-class="text-right" reverse-fill-mask mask="########" v-if="j*10 - 10 +i !=50"
+                     style="width: 100%; background-color:white" class="col-auto"
+
+  @blur="onB(j*10 - 10 +i )"
+                     dense v-model.number="layout1[ j*10 - 10 +i].V">
               <template v-slot:prepend>
-                <span  :class="getNumClass(j*10 - 10 +i)">{{ j*10 - 10 +i }}</span>
+                <div class="row">
+                  <span :class="getNumClass(layout1[ j*10 - 10 +i].Num)">{{ layout1[ j*10 - 10 +i].Num }}</span>
+                  <span class="bet_m">{{ layout1[ j*10 - 10 +i].BetM }}</span>
+                </div>
+              </template>
+              <template v-slot:append>
+                <div class="row">
+                  <span class="bet_m2">{{ layout1[ j*10 - 10 +i].OkBetM }}</span>
+                </div>
               </template>
             </q-input>
           </div>
 
         </div>
       </div>
-      <div class="col-3 q-gutter-sm">
-        <q-tabs
-          v-model="tab"
-          dense
-          class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab name="mails" label="投注操作" />
-          <q-tab name="alarms" label="历史记录" />
-        </q-tabs>
-        <q-separator />
-        <q-tab-panels v-model="tab" animated>
-          <q-tab-panel name="mails">
-            <div class="q-gutter-sm">
-              <div class="q-gutter-sm">
-                <q-btn @click="onclickSetVByType('Red')" class="but_r" label="红"/>
-                <q-btn @click="onclickSetVByType('Blue')" class="but_b" label="蓝"/>
-                <q-btn @click="onclickSetVByType('Green')" class="but_g" label="绿"/>
-              </div>
-              <div class="q-gutter-sm">
-                <q-btn @click="onclickSetVByType('Single')" class="" label="单"/>
-                <q-btn @click="onclickSetVByType('Double')" class="" label="双"/>
-              </div>
-              <div class="q-gutter-sm">
-                <q-btn @click="onclickSetVByType('Shu')">鼠</q-btn>
-                <q-btn @click="onclickSetVByType('Niu')">牛</q-btn>
-                <q-btn @click="onclickSetVByType('Hu')">虎</q-btn>
-                <q-btn @click="onclickSetVByType('Tu')">兔</q-btn>
-              </div>
-              <div class="q-gutter-sm">
-                <q-btn @click="onclickSetVByType('Long')">龙</q-btn>
-                <q-btn @click="onclickSetVByType('She')">蛇</q-btn>
-                <q-btn @click="onclickSetVByType('Ma')">马</q-btn>
-                <q-btn @click="onclickSetVByType('Yang')">羊</q-btn>
-              </div>
-              <div class="q-gutter-sm">
-                <q-btn @click="onclickSetVByType('Hou')">猴</q-btn>
-                <q-btn @click="onclickSetVByType('Ji')">鸡</q-btn>
-                <q-btn @click="onclickSetVByType('Gou')">狗</q-btn>
-                <q-btn @click="onclickSetVByType('Zhu')">猪</q-btn>
-              </div>
-            </div>
-          </q-tab-panel>
-          <q-tab-panel name="alarms"  class="q-pa-none">
-
-              {{ ResultHistoryInfo.Data.CycleId }}
-            <div class="row">
-              <span class="col-1" v-for="item in ResultHistoryInfo.Data.TMs" :class="getNumClass(item)">{{ item }}</span>
-            </div>
-
-          </q-tab-panel>
-        </q-tab-panels>
-      </div>
-
-
-    </q-card-section>
-    <q-card-section class="q-pa-none row">
-      <div class="row q-pa-sm-xs q-gutter-sm" style="max-height: 50px">
-        <q-input class="bg-white" outlined mask="########"  dense v-model.number="defValue">
-          <template v-slot:prepend class="bg-white">
-            <q-btn flat size="sm" @click="onSetDefV">默认金额：</q-btn>
-          </template>
-        </q-input>
-        <q-btn  color="purple" @click="onClickBet"  label="提交投注"/>
-        <q-btn color="purple"  @click="onclickClear0" label="清0"/>
-        <q-input  style="width: 140px" filled readonly dense v-model="C.NumOrder">
-          <template v-slot:prepend>
-            <span style=" font-size: 14px">投注号：</span>
-          </template>
-        </q-input>
-
-        <q-input style="width: 140px" filled readonly dense v-model="C.S">
-          <template v-slot:prepend>
-            <span style=" font-size: 14px">封盘时间：</span>
-          </template>
-        </q-input>
-        <q-select filled style="width: 200px" @update:model-value="onUpdateLotteryType" v-model="LotteryTInfo.LotteryType" :options="LotteryTInfo.ItemTypes"
-                  dense
-                  option-value="Id"
-                  option-label="Name"
-                  option-disable="inactive"
-                  emit-value
-                  map-options >
-          <template v-slot:prepend>
-            <span style=" font-size: 14px">彩种：</span>
-          </template>
-        </q-select>
-        <q-input  style="width: 180px" filled readonly dense v-model="C.L">
-          <template v-slot:prepend>
-            <span style=" font-size: 14px">期号：</span>
-          </template>
-        </q-input>
-      </div>
-      <div class="row col-12">
-        <q-input  class="bg-white col-12" @update:model-value="onQuickBet"
-                  outlined placeholder="按号码=金额的格式，多个用空格分隔。如1=10 12=20"  dense v-model="QuickBetM">
-          <template v-slot:prepend class="bg-white">
-            <span style="font-size: 14px">快速投注：</span>
-          </template>
-        </q-input>
-      </div>
-    </q-card-section>
-
-    <q-card-section class="q-pa-none">
-      <q-table :rows="tableInfo.rows" :columns="tableInfo.columns" separator="cell"  class="q-table-low-height"
-               v-model:pagination="tableInfo.pagination" @request="onRequest">
-        <template v-slot:body="props">
-          <q-tr :props="props">
-            <q-td key="Id" :props="props">
-              {{ props.row.Id }}
-            </q-td>
-            <q-td key="Title" :props="props">
-              {{ props.row.Title }}
-            </q-td>
-            <q-td key="SiteUrl" :props="props">
-              {{ props.row.SiteUrl }}
-            </q-td>
-            <q-td key="UserName" :props="props">
-              {{ props.row.UserName }}
-            </q-td>
-            <q-td key="DataState" :props="props">
-              {{ props.row.DataState }}
-            </q-td>
-            <q-td key="Rate" :props="props">
-              {{ props.row.Rate * 100 }}%
-            </q-td>
-            <q-td key="BetMoney" :props="props">
-              {{ props.row.BetMoney }}
-            </q-td>
-            <q-td key="ErrBetMoney" :props="props">
-              {{ props.row.ErrBetMoney }}
-            </q-td>
-            <q-td key="IsBet" :props="props">
-              <div v-if="(props.row.IsBet==1 && props.row.LoginState==1)" >
-                <q-btn size="sm"  color="primary" @click="onClickSetBetState(props.row,0)">启用中</q-btn>
-                <q-btn size="sm" @click="showBetDetailDialog(props.row)">投注明细</q-btn>
-              </div>
-              <div v-else>
-                <q-btn size="sm" @click="onClickSetBetState(props.row,1)">禁用中</q-btn>
-                <q-btn size="sm" @click="showBetDetailDialog(props.row)">投注明细</q-btn>
-              </div>
-            </q-td>
-            <q-td key="StrLotteryType" :props="props">
-              <div v-if="props.row.StrLotteryType==''" >
-                无数据
-              </div>
-              <span v-else>
-               {{ props.row.StrLotteryType }}
-             </span>
-            </q-td>
-            <q-td key="LoginState" :props="props">
-             <span v-if="props.row.LoginState==1">
-               已登录
-             </span>
-              <span v-else>
-               未登录
-             </span>
-            </q-td>
-            <q-td key="Operate" :props="props">
-              <div v-if="props.row.LoginState==1" >
-                <q-btn color="primary" size="sm" label="下线" class="q-mx-xs" @click="onClickLoginOut(props.row)"/>
-              </div>
-              <div v-else>
-                <q-btn  size="sm" label="登录" class="q-mx-xs" @click="showLogin(props.row)"/>
-              </div>
-
-
-            </q-td>
-          </q-tr>
-        </template>
-      </q-table>
     </q-card-section>
 
   </q-card>
@@ -197,52 +155,10 @@
   <q-card class="table-bg no-shadow bg-white" bordered>
   </q-card>
 
-
-  <q-dialog    v-model="betDetailDialog.dialogVisible"  >
-    <q-card style="width: 90%">
-      <q-toolbar>
-        <q-toolbar-title> {{ EditDialog.Title }}</q-toolbar-title>
-        <q-btn flat round dense icon="close" v-close-popup />
-      </q-toolbar>
-      <q-separator />
-
-      <q-card-section class="q-pa-none">
-        <q-table :rows="betDetailDialog.tableInfo.rows" :columns="betDetailDialog.tableInfo.columns" separator="cell"
-                 v-model:pagination="betDetailDialog.tableInfo.pagination" @request="onBetDetailRequest">
-          <template v-slot:body="props">
-            <q-tr :props="props">
-              <q-td key="Id" :props="props">
-                {{ props.row.Id }}
-              </q-td>
-              <q-td key="NumOrder" :props="props">
-                {{ props.row.NumOrder }}
-              </q-td>
-              <q-td key="BetMoney" :props="props">
-                {{ props.row.BetMoney }}
-              </q-td>
-              <q-td key="ErrBetMoney" :props="props">
-                {{ props.row.ErrBetMoney }}
-              </q-td>
-              <q-td key="BetInfo" :props="props">
-                {{ props.row.BetInfo }}
-              </q-td>
-
-              <q-td key="Operate" :props="props">
-                <q-btn color="primary" size="sm" label="删除" class="q-mx-xs" @click="onClickDelBetDetail(props.row)"/>
-              </q-td>
-            </q-tr>
-
-          </template>
-        </q-table>
-      </q-card-section>
-
-    </q-card>
-  </q-dialog>
-
-  <q-dialog    v-model="loginDialog.Visible"  >
+  <q-dialog    v-model="DialogAgentLogin.Visible"  >
     <q-card style="width: 280px">
       <q-toolbar>
-        <q-toolbar-title> {{ loginDialog.title }}</q-toolbar-title>
+        <q-toolbar-title> {{ DialogAgentLogin.title }}</q-toolbar-title>
         <q-btn flat round dense icon="close" v-close-popup />
       </q-toolbar>
       <q-separator />
@@ -250,19 +166,150 @@
         <q-item dense>
           <q-item-section>
             <q-item-label>
-              <q-img width="100px" :src="loginDialog.form.CodePicUrl" @click="refreshPic(loginDialog.SiteUserInfo.Id)"></q-img>
+              <q-img width="100px" :src="DialogAgentLogin.form.CodePicUrl" @click="refreshAgentPic(DialogAgentLogin.SiteUserInfo.Id)"></q-img>
             </q-item-label>
           </q-item-section>
           <q-item-section>
             <q-item-label>
-              <q-input dense hint="输入验证码"  v-model="loginDialog.form.Code"/>
+              <q-input dense hint="输入验证码"  v-model="DialogAgentLogin.form.Code"/>
             </q-item-label>
           </q-item-section>
         </q-item>
       </q-card-section>
       <q-card-actions   align="right">
-        <q-btn flat @click="onClickLoginCode">确定</q-btn>
-        <q-btn flat  @click="loginDialog.Visible=false">取消</q-btn>
+        <q-btn flat @click="onClickAgentLoginCode">确定</q-btn>
+        <q-btn flat  @click="DialogAgentLogin.Visible=false">取消</q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+  <q-dialog    v-model="DialogBetLogin.Visible"  >
+    <q-card style="width: 280px">
+      <q-toolbar>
+        <q-toolbar-title> {{ DialogBetLogin.title }}</q-toolbar-title>
+        <q-btn flat round dense icon="close" v-close-popup />
+      </q-toolbar>
+      <q-separator />
+      <q-card-section class="q-pa-none">
+        <q-item dense>
+          <q-item-section>
+            <q-item-label>
+              <q-img width="100px" :src="DialogBetLogin.form.CodePicUrl" @click="refreshBetPic(DialogBetLogin.SiteUserInfo.Id)"></q-img>
+            </q-item-label>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>
+              <q-input dense hint="输入验证码"  v-model="DialogBetLogin.form.Code"/>
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-card-section>
+      <q-card-actions   align="right">
+        <q-btn flat @click="onClickBetLoginCode">确定</q-btn>
+        <q-btn flat  @click="DialogBetLogin.Visible=false">取消</q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+  <q-dialog    v-model="EditDialogAgent.Visible"  >
+    <q-card style="width: 600px">
+      <q-toolbar>
+        <q-toolbar-title> {{ EditDialogAgent.Title }}</q-toolbar-title>
+        <q-btn flat round dense icon="close" v-close-popup />
+      </q-toolbar>
+      <q-separator />
+
+
+      <q-item dense>
+        <q-item-section top class="col-2 gt-sm">
+          <q-item-label class="q-mt-sm text-right">标题:</q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label><q-input v-model="EditDialogAgent.Form.Title" dense /></q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-item dense>
+        <q-item-section top class="col-2 gt-sm">
+          <q-item-label class="q-mt-sm text-right">网址:</q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label><q-input v-model="EditDialogAgent.Form.SiteUrl" dense /></q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-item dense>
+        <q-item-section top class="col-2 gt-sm">
+          <q-item-label class="q-mt-sm text-right">用户名:</q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label><q-input v-model="EditDialogAgent.Form.UserName" dense /></q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-item dense>
+        <q-item-section top class="col-2 gt-sm">
+          <q-item-label class="q-mt-sm text-right">密码:</q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label><q-input v-model="EditDialogAgent.Form.Pwd" dense /></q-item-label>
+        </q-item-section>
+      </q-item>
+
+
+      <q-card-actions   align="right">
+        <q-btn flat @click="onClickSaveAgent">确定</q-btn>
+        <q-btn flat  @click="EditDialogAgent.Visible=false">取消</q-btn>
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+  <q-dialog    v-model="EditDialogBet.Visible"  >
+    <q-card style="width: 600px">
+      <q-toolbar>
+        <q-toolbar-title> {{ EditDialogBet.Title }}</q-toolbar-title>
+        <q-btn flat round dense icon="close" v-close-popup />
+      </q-toolbar>
+      <q-separator />
+
+
+      <q-item dense>
+        <q-item-section top class="col-2 gt-sm">
+          <q-item-label class="q-mt-sm text-right">标题:</q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label><q-input v-model="EditDialogBet.Form.Title" dense /></q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-item dense>
+        <q-item-section top class="col-2 gt-sm">
+          <q-item-label class="q-mt-sm text-right">网址:</q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label><q-input v-model="EditDialogBet.Form.SiteUrl" dense /></q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-item dense>
+        <q-item-section top class="col-2 gt-sm">
+          <q-item-label class="q-mt-sm text-right">用户名:</q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label><q-input v-model="EditDialogBet.Form.UserName" dense /></q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-item dense>
+        <q-item-section top class="col-2 gt-sm">
+          <q-item-label class="q-mt-sm text-right">密码:</q-item-label>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label><q-input v-model="EditDialogBet.Form.Pwd" dense /></q-item-label>
+        </q-item-section>
+      </q-item>
+
+
+      <q-card-actions   align="right">
+        <q-btn flat @click="onClickSaveBet">确定</q-btn>
+        <q-btn flat  @click="EditDialogBet.Visible=false">取消</q-btn>
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -270,15 +317,71 @@
 </template>
 
 <script>
-import {
-  GetSiteTypeList, GetNumComparisonInfo, DelBetSiteData, GetBetSiteDataList,
-  GetSiteUserInfoList, SixLogin, SetBetState, SixLoginOut, GetC, Bet, SetLotteryType,
-  GetResultHistory
-} from "src/api/Api"
+import {GetC,} from "src/api/Api"
+import {GetAgentBetData, GetAgentUser, UpdateAgentUser} from "src/api/DataApi_Agent"
+import {GetBetUser,UpdateBetUser} from "src/api/DataApi_Bet"
+import {AgentLogin, AgentLoginOut, GetAndSaveNumData} from "src/api/AgentSite";
+import {BetLogin, BetLoginOut, Bet} from "src/api/BetSite";
+import {GetConfig, SaveConfig} from "src/api/DataApi";
 export default {
   name: "Bet",
   data(){
     return{
+      StockSelectItems:[
+        {Id:0,Name:"全部"},
+        {Id:1,Name:"实占货量"},
+      ],
+
+      BetWaySelects:{
+        Rate:1,//比例
+        BetM:2,//金额
+      },
+
+      RateWaySelects:{
+        F:0,//反
+        Z:1,//正
+      },
+      InputData:{
+        Datas:[0,0,0,0,0,0]
+      },
+      InputBetData:{
+        Datas:[0,
+          0,0,0,0,0,0,0,0,0,0,
+          0,0,0,0,0,0,0,0,0,0,
+          0,0,0,0,0,0,0,0,0,0,
+          0,0,0,0,0,0,0,0,0,0,
+          0,0,0,0,0,0,0,0,0,0,
+        ]
+      },
+      AgentBetData:[],
+      ConfigData:{
+        Id:1,
+        RateWay:0,
+        IsAuto:0,
+        BetWay:1,
+        Rate:50,
+        Stock:0,//占成方式:0:全部,1:实占
+        BetTime1:"10:56",
+        BetTime2:"10:56",
+        LotteryType:1,
+      },
+      EditDialogAgent:{
+        Title:'',
+        Visible:false,
+        Form:{Id:0,Title:'',UserName:'',Pwd:'',SiteUrl:''
+        },
+      },
+      EditDialogBet:{
+        Title:'',
+        Visible:false,
+        Form:{Id:0,Title:'',UserName:'',Pwd:'',SiteUrl:''},
+      },
+      AgentUserInfo:{
+        UserData:{Id:1,UserName:'test', IsLogin:0}
+      },
+      BetUserInfo:{
+        UserData:{UserName:'test', IsLogin:0}
+      },
       tab:"mails",
       ResultHistoryInfo:{
         Data:{
@@ -297,20 +400,20 @@ export default {
       refreshDataTimer:null,
       RefreshData:{
         refreshDataTimer:null,
-        MaxCurResultSecond:2,
-        CountdownSecond:2,
         CurResultSecond:0,
-        ReloadSiteUserDataMaxSecond:10,
-        ReloadSiteUserDataSecond:0
+        ReloadSiteUserDataSecond:0,
+        AgentData:{
+          Second:0,
+          MaxSecond:15,
+        },
       },
       QuickBetM:'',
       defValue:1,
       layout1:[
-        {num:0,v:0},
-        {num:1,v:0}
+        {Num:0,V:0,BetM:0,OkBetM:0},
+        {Num:1,V:0,BetM:0,OkBetM:0}
       ],
-      formData :{
-        betM:[]},
+
       NumComparisonInfo:{
         Single:[],
         Double:[],
@@ -325,84 +428,23 @@ export default {
         ItemTypes:[
           { Id:1,Name:"澳门六合彩"},
           { Id:2,Name:"新澳门六合彩"},
-          { Id:3,Name:"超级6+1六合彩"},
-          { Id:4,Name:"闪电6+1六合彩"}
+          // { Id:3,Name:"超级6+1六合彩"},
+          // { Id:4,Name:"闪电6+1六合彩"}
         ]
       },
 
-      tableInfo:{
-        columns:[
-          {name:'Id',label:'ID',field:'Id', align: 'center'},
-          {name:'Title',label:'名称',field:'Title', align: 'center'},
-          {name:'SiteUrl',label:'地址',field:'SiteUrl', align: 'right'},
-          {name:'UserName',label:'账号',field:'UserName', align: 'right'},
-          {name:'DataState',label:'状态',field:'DataState' , align: 'center'},
-          {name:'Rate',label:'投注比',field:'Rate' , align: 'center'},
-          {name:'BetMoney',label:'投注金额',field:'BetMoney' , align: 'center'},
-          {name:'ErrBetMoney',label:'失败金额',field:'ErrBetMoney' , align: 'center'},
-          {name:'IsBet',label:'投注状态',field:'IsBet' , align: 'center'},
-          {name:'StrLotteryType',label:'彩种状态',field:'StrLotteryType' , align: 'center'},
-          {name:'LoginState',label:'登录状态',field:'LoginState' , align: 'center'},
-
-          {name:'Operate',label:'操作',field:'Operate' , align: 'center'},
-        ],
-        rows:[],
-        pagination:{
-          page:1,
-          rowsPerPage:10,
-          rowsNumber:0,
-        },
-        query:{
-          PageIndex:1,
-          PageSize:10,
-        },
-        DataEx:{CurCycleId:"",NumOrder:""},
-        MaxSecond:30,
-        ReloadSiteUserDataSecond:0,
-        ReloadSiteUserDataMaxSecond:5,
-        Second:0,
-        autoRefresh:false,
-        Code:'',
-      },
-      EditDialog:{
-        Title:'',
+      DialogAgentLogin:{
+        title:'登录',
+        isBet:0,
+        SiteUserInfo:{},
         Visible:false,
-        Form:{SiteName:'',SiteTitle:'',SiteUrl:'',SiteDes:'',State:0,Id:0},
+        form:{
+          CodePicUrl:'',
+          Code:''
+        }
       },
 
-      betDetailDialog:{
-        title:'投注明细',
-        tableInfo:{
-          columns:[
-            {name:'Id',label:'ID',field:'Id', align: 'center'},
-            {name:'Title',label:'名称',field:'Title', align: 'center'},
-            {name:'SiteUrl',label:'地址',field:'SiteUrl', align: 'right'},
-            {name:'UserName',label:'账号',field:'UserName', align: 'right'},
-            {name:'DataState',label:'状态',field:'DataState' , align: 'center'},
-            {name:'Rate',label:'投注比',field:'Rate' , align: 'center'},
-            {name:'BetMoney',label:'投注金额',field:'BetMoney' , align: 'center'},
-            {name:'ErrBetMoney',label:'失败金额',field:'ErrBetMoney' , align: 'center'},
-            {name:'IsBet',label:'投注状态',field:'IsBet' , align: 'center'},
-            {name:'LoginState',label:'登录状态',field:'LoginState' , align: 'center'},
-
-            {name:'Operate',label:'操作',field:'Operate' , align: 'center'},
-          ],
-          rows:[],
-          pagination:{
-            page:1,
-            rowsPerPage:10,
-            rowsNumber:0,
-          },
-          query:{
-            SiteId:0,
-            PageSize:20,
-            PageIndex: 1,
-            OrderBy: '',
-          },
-        },
-        dialogVisible:false
-      },
-      loginDialog:{
+      DialogBetLogin:{
         title:'登录',
         isBet:0,
         SiteUserInfo:{},
@@ -415,337 +457,160 @@ export default {
     }
   },
   methods:{
-    onSetDefV(){
-      this.layout1.forEach(item =>{
-        if (item.v > 0) {
-          item.v = this.defValue
-        }
-      })
-
-      let arrNum = new Array();
-      for (let i=1;i<50;i++){
-        if (this.layout1[i].v > 0 ){
-          arrNum.push(i+"="+this.layout1[i].v)
-        }
-      }
-      let str = arrNum.join(" ")
-      this.QuickBetM = str
-    },
-    onQuickBet(v){
-      let mpNum = new Map()
-      let arrNumMs = v.split(" ")
-      arrNumMs.forEach(numM =>{
-        let aNM = numM.split("=")
-
-         if (aNM.length==2){
-           let num = parseInt(aNM[0])
-           let Bet = parseInt(aNM[1])
-           if (num > 0 && num <50) {
-
-             mpNum.set(num, Bet)
-           }
-         }
-      })
-      this.onclickClear0()
-      this.layout1.forEach(item =>{
-          if (mpNum.has(item.num)) {
-            item.v = mpNum.get(item.num)
-          }
-      })
-    },
-    onUpdateLotteryType(v){
-      let query =  {LotteryType:v}
-
-       this.tableInfo.rows.forEach(item =>{
-         item.DataState = "正在重新获取数据..."
-       })
-      SetLotteryType(query).then(response => {
+    loadAgentUser(){
+      let query = {}
+      GetAgentUser(query).then(response => {
         const { code, msg, obj } = response
         if (code==200) {
-          this.getC()
-          this.getSiteInfoList()
+          this.AgentUserInfo.UserData = obj
         } else {
         }
       }).catch(error => {
       })
     },
-    onRequest(props){
-      if (props.pagination.rowsPerPage==0) {
-        props.pagination.rowsPerPage = 1000
-      }
-      this.tableInfo.pagination = props.pagination
-      this.reloadTableData()
-    },
-    reloadTableData(){
-      this.tableInfo.query.PageIndex = this.tableInfo.pagination.page
-      this.tableInfo.query.PageSize = this.tableInfo.pagination.rowsPerPage
-
-      GetSiteTypeList(this.tableInfo.query).then(response => {
+    loadBetUser(){
+      let query = {}
+      GetBetUser(query).then(response => {
         const { code, msg, obj } = response
-        if (code==200){
-          console.log(obj)
-          this.tableInfo.pagination.rowsNumber = obj.GroupData.C
-          this.tableInfo.rows = obj.ListData
+        if (code==200) {
+          this.BetUserInfo.UserData = obj
+        } else {
         }
       }).catch(error => {
       })
     },
-    openEditDialog(row){
-      this.EditDialog.Title = `修改[${row.SiteName}]`
-      this.EditDialog.Form.Id = row.Id
-      this.EditDialog.Form.SiteName = row.SiteName
-      this.EditDialog.Form.SiteTitle = row.SiteTitle
-      this.EditDialog.Form.SiteUrl = row.SiteUrl
-      this.EditDialog.Form.SiteDes = row.SiteDes
-
-      this.EditDialog.Visible = true
-    },
-
-    // onClickSaveInfo(){
-    //   SaveSiteType(this.EditDialog.Form).then(response => {
-    //     const { code, msg, obj } = response
-    //     if (code==200){
-    //       this.reloadTableData()
-    //       this.EditDialog.Visible = false
-    //     } else {
-    //       this.$q.notify(msg)
-    //     }
-    //   }).catch(error => {
-    //     this.$q.notify(error)
-    //   })
-    // },
-    onclickClear0() {
-      this.layout1.forEach(item =>{
-        item.v = null
-      })
-
-    },
-
-    onClickBet(){
-      let arrBetInfo = new Object()
-      let hasNum = false
-      this.layout1.forEach(item =>{
-        if (item.v > 0) {
-          arrBetInfo[item.num]= parseInt(item.v)
-          hasNum = true
-        }
-      })
-      if (!hasNum) {
-        this.$q.notify("必须有一个号码金额大于0")
-        return
-      }
-      let BetData =JSON.stringify(arrBetInfo)
-
-      const BetQuery ={
-        BetData:BetData,
-        LotteryType:this.LotteryTInfo.LotteryType
-      }
-      Bet(BetQuery).then(response => {
+    loadAgentBetData(){
+      let query = {AgentId:this.AgentUserInfo.UserData.Id}
+      GetAndSaveNumData(query).then(response => {
         const { code, msg, obj } = response
-        console.log(code, msg, obj)
-        if (code==200) {
-          let ListData = obj.Data.ListData
-          let GroupData = obj.Data.GroupData
-          let NumOrder = obj.NumOrder
-          this.loadSiteUserData(ListData, GroupData, obj.Data.DataEx)
-          this.onclickClear0()
-          if (obj.ErrM!="") {
-            this.$q.notify(`单号${NumOrder}投注完成,但部分数据有问题：`+obj.ErrM)
-          } else {
-            this.$q.notify(`单号${NumOrder}投注完成`)
+        if (code==200) { 
+          if(obj.Msg!=""){
+            this.$q.notify(obj.Msg)
           }
+          this.AgentBetData = obj.Data
+          this.setLayoutData()
+
         } else {
           this.$q.notify(msg)
         }
       }).catch(error => {
-        this.$q.notify(error)
       })
     },
-    onclickSetV(i){
-      if(this.layout1[i].v == this.defValue) {
-        this.layout1[i].v = null
-        this.formData.betM[i] = 0
-      } else {
-        this.layout1[i].v = this.defValue
-        this.formData.betM[i] = this.defValue
+    onB(i){
+      if (this.ConfigData.BetWay==2 ){
+        this.InputBetData.Datas[i] =  this.layout1[i].V
       }
-
-      let arrNum = new Array();
-      for (let i=1;i<50;i++){
-         if (this.layout1[i].v > 0 ){
-           arrNum.push(i+"="+this.layout1[i].v)
-         }
-      }
-      let str = arrNum.join(" ")
-      this.QuickBetM = str
     },
-
-    onclickSetVByType(type) {
-      let allG0=true
-      let allE0=true
-      this.NumComparisonInfo[type].forEach(num =>{
-          let i = num
-          if (this.layout1[i].v==0 || this.layout1[i].v==null){
-            allG0 = false
-          } else if (this.layout1[i].v>0){
-            allE0 = false
+    setLayoutData(){
+      let divisor =100
+      for (let i=1;i<=49;i++) {
+        if (this.ConfigData.BetWay==this.BetWaySelects.Rate){
+          let j = 50-i
+          if (this.ConfigData.RateWay==1){
+            j=i
           }
+          this.AgentBetData[j].V = Math.floor(( this.AgentBetData[i].BetM *  this.ConfigData.Rate)/divisor)
+        }else {
+           this.AgentBetData[i].V = this.InputBetData.Datas[i]
         }
-      )
-      let setV = ""
 
-      if (!allG0) {
-        setV = this.defValue
+        if ( this.AgentBetData[i].V==0) {
+          this.AgentBetData[i].V = null
+        }
       }
-      this.NumComparisonInfo[type].forEach(num =>{
-          let i = num
-          this.layout1[i].v=setV
+      this.layout1 = {... this.AgentBetData}
+    },
+    onClickSetBetM(v){
+      let beginI = (v-1) * 10
+      let sI = 0
+      for (let i=1;i<=10;i++) {
+        sI =beginI+i
+        this.layout1[sI].V =this.InputData.Datas[v]
+        if (this.ConfigData.BetWay==2) {
+          this.InputBetData.Datas[sI] = this.layout1[sI].V
         }
-      )
-
+        if (this.layout1[sI].V ==0) {
+          this.layout1[sI].V = null
+        }
+      }
+    },
+    onClickSetBetMBaseRate(v){
+      let divisor =100
+      let beginI = (v-1) * 10
+      let sI = 0
+      for (let i=1;i<=10;i++) {
+        sI =beginI+i
+        this.layout1[sI].V = Math.floor(this.layout1[sI].BetM * this.ConfigData.Rate / divisor)
+        if (this.ConfigData.BetWay==2) {
+          this.InputBetData.Datas[sI] = this.layout1[sI].V
+        }
+        if (this.layout1[sI].V ==0) {
+          this.layout1[sI].V = null
+        }
+      }
     },
 
-    getNumClass(i){
+
+    openEditDialog(row){
+      this.EditDialogAgent.Title = `修改[${row.SiteName}]`
+      this.EditDialogAgent.Form.Id = row.Id
+      this.EditDialogAgent.Form.SiteName = row.SiteName
+      this.EditDialogAgent.Form.SiteTitle = row.SiteTitle
+      this.EditDialogAgent.Form.SiteUrl = row.SiteUrl
+      this.EditDialogAgent.Form.SiteDes = row.SiteDes
+
+      this.EditDialogAgent.Visible = true
+    },
+
+
+     getNumClass(i){
       return 'num'.concat(i)
     },
     iniLayout1(){
       let layout = []
       for (let i=0;i<=50;i++) {
-        let aNum = {num:i,v:null}
+        let aNum = {Num:i,V:null, BetM:0,OkBetM:0}
         layout.push(aNum)
       }
       this.layout1 = layout
     },
-    iniBetM(){
-      for (let i=0;i<=49;i++) {
-        this.formData.betM[i] = 0
-      }
-    },
 
-    async getNumComparisonInfo() {
-      GetNumComparisonInfo({}).then(response => {
-        const { code, msg, obj } = response
-        this.NumComparisonInfo = obj
-      }).catch(error => {
-      })
-    },
-    loadSiteUserData(ListData, GroupData, DataEx) {
-      this.C.NumOrder = DataEx.NumOrder
-      this.C.L = DataEx.CurCycleId
-      this.tableInfo.DataEx = DataEx
-      this.tableInfo.ReloadSiteUserDataSecond = 0
 
-      this.tableInfo.rows = ListData
-
-      this.tableInfo.total = GroupData
+    showAgentLogin(row){
+      this.DialogAgentLogin.title = `登录【${row.UserName}】`
+      this.DialogAgentLogin.SiteUserInfo = {...row}
+        this.DialogAgentLogin.form.Code = ""
+      this.DialogAgentLogin.form.CodePicUrl = this.getAgentCodePicUrl(row.Id, true)
+      this.DialogAgentLogin.Visible = true
     },
-
-    async getSiteInfoList() {
-      // this.SiteInfo.loading = true
-      this.tableInfo.query.LotteryType = this.LotteryTInfo.LotteryType
-      GetSiteUserInfoList(this.tableInfo.query).then(response => {
-        const { code, msg, obj } = response
-        this.loadSiteUserData(obj.ListData, obj.GroupData, obj.DataEx)
-        // this.SiteInfo.loading = false
-      }).catch(error => {
-        // this.SiteInfo.loading = false
-      })
+    showBetLogin(row){
+      this.DialogBetLogin.title = `登录【${row.UserName}】`
+      this.DialogBetLogin.SiteUserInfo = {...row}
+      this.DialogBetLogin.form.Code = ""
+      this.DialogBetLogin.form.CodePicUrl = this.getBetCodePicUrl(row.Id, true)
+      this.DialogBetLogin.Visible = true
     },
-
-    onClickSetBetState(row, isBet) {
-      if (row.LoginState!=1 && isBet==1) {
-        this.showLogin(row, isBet)
-        return
-      }
-
-      const query ={
-        Id:row.Id,
-        State:isBet,
-      }
-      SetBetState(query).then(response => {
-        const { code, msg, obj } = response
-        if (code==200) {
-          this.getSiteInfoList()
-        } else {
-          this.$q.notify(msg)
-        }
-      }).catch(error => {
-        this.$q.notify(error)
-      })
-    },
-
-    onBetDetailRequest(props){
-      if (props.pagination.rowsPerPage==0) {
-        props.pagination.rowsPerPage = 1000
-      }
-      this.betDetailDialog.tableInfo.pagination = props.pagination
-      this.reloadTableData()
-    },
-    onClickDelBetDetail(row){
-      let hint = "认要删除["+row.NumOrder+"]吗？"
-      this.$q.dialog({
-        title: '提示',
-        message: hint,
-        ok:"确定",
-        cancel:"取消",
-      }).onOk(data  => {
-        let query = {Id:row.Id}
-        DelBetSiteData(query).then(response => {
-          const { code, msg, obj } = response
-          if (code==200) {
-            this.getBetSiteDataList()
-            this.$q.notify("删除成功")
-          } else {
-            this.$q.notify(msg)
-          }
-        }).catch(error => {
-          this.$q.notify(error)
-        })
-      })
-
-    },
-    loadBetSiteDataList(ListData, GroupData){
-      this.betDetailDialog.tableInfo.rows = ListData
-      this.betDetailDialog.total = GroupData
-    },
-
-    getBetSiteDataList(){
-      GetBetSiteDataList(this.betDetailDialog.tableInfo.query).then(response => {
-        const { code, msg, obj } = response
-        this.loadBetSiteDataList(obj.ListData, obj.GroupData)
-      }).catch(error => {
-      })
-    },
-
-    showLogin(row, isBet){
-      this.loginDialog.title = `登录【${row.UserName}】`
-      this.loginDialog.isBet = isBet
-      this.loginDialog.SiteUserInfo = row
-      this.loginDialog.form.Code = ""
-      this.loginDialog.form.CodePicUrl = this.getCodePicUrl(row.Id, true)
-      this.loginDialog.Visible = true
-    },
-    getCodePicUrl(id, f){
+    getAgentCodePicUrl(id, f){
       let t1
       if (f) {
         let t = new Date()
         t1 = t.getTime()
       }
-      let codeSrc ='/api/getcodeimage?Id='+id+'&t='+t1
+      let codeSrc ='/agentsite/getcodeimage?Id='+id+'&t='+t1
       return codeSrc
     },
-    onClickLoginCode(){
+    onClickAgentLoginCode(){
       const loginP ={
-        Id:this.loginDialog.SiteUserInfo.Id,
-        Code:this.loginDialog.form.Code,
-        IsBet:this.loginDialog.isBet
+        Id:this.DialogAgentLogin.SiteUserInfo.Id,
+        Code:this.DialogAgentLogin.form.Code,
+        IsBet:this.DialogAgentLogin.isBet
       }
-      SixLogin(loginP).then(response => {
+      AgentLogin(loginP).then(response => {
         const { code, msg, obj } = response
         if (code==200) {
           this.C.HasLogin = true
-          this.getSiteInfoList()
-          this.loginDialog.Visible = false
+          this.DialogAgentLogin.Visible = false
+          this.loadAgentUser()
         } else {
           this.$q.notify(msg)
         }
@@ -754,14 +619,14 @@ export default {
       })
     },
 
-    onClickLoginOut(row){
-      const loginP ={
-        Id:row.Id,
+    onClickAgentLogout(UserInfo){
+      const query ={
+        Id:UserInfo.Id
       }
-      SixLoginOut(loginP).then(response => {
+      AgentLoginOut(query).then(response => {
         const { code, msg, obj } = response
         if (code==200) {
-          this.getSiteInfoList()
+          this.loadAgentUser()
         } else {
           this.$q.notify(msg)
         }
@@ -769,8 +634,86 @@ export default {
         this.$q.notify(error)
       })
     },
-    refreshPic(id){
-      this.loginDialog.form.CodePicUrl = this.getCodePicUrl(id, true)
+    onClickBetLogout(UserInfo){
+      const query ={
+        Id:UserInfo.Id
+      }
+      BetLoginOut(query).then(response => {
+        const { code, msg, obj } = response
+        if (code==200) {
+          this.loadBetUser()
+        } else {
+          this.$q.notify(msg)
+        }
+      }).catch(error => {
+        this.$q.notify(error)
+      })
+    },
+
+
+    getBetCodePicUrl(id, f){
+      let t1
+      if (f) {
+        let t = new Date()
+        t1 = t.getTime()
+      }
+      let codeSrc ='/betsite/getcodeimage?Id='+id+'&t='+t1
+      return codeSrc
+    },
+    onClickBetLoginCode(){
+      const loginP ={
+        Id:this.DialogBetLogin.SiteUserInfo.Id,
+        Code:this.DialogBetLogin.form.Code,
+      }
+      BetLogin(loginP).then(response => {
+        const { code, msg, obj } = response
+        if (code==200) {
+          this.C.HasLogin = true
+          this.DialogBetLogin.Visible = false
+          this.loadBetUser()
+        } else {
+          this.$q.notify(msg)
+        }
+      }).catch(error => {
+        this.$q.notify(error)
+      })
+    },
+
+    onClickAgentLoginOut(row){
+      const loginP ={
+        Id:row.Id,
+      }
+      AgentLoginOut(loginP).then(response => {
+        const { code, msg, obj } = response
+        if (code==200) {
+        } else {
+          this.$q.notify(msg)
+        }
+      }).catch(error => {
+        this.$q.notify(error)
+      })
+    },
+
+    onClickBetLoginOut(row){
+      const loginP ={
+        Id:row.Id,
+      }
+      BetLoginOut(loginP).then(response => {
+        const { code, msg, obj } = response
+        if (code==200) {
+        } else {
+          this.$q.notify(msg)
+        }
+      }).catch(error => {
+        this.$q.notify(error)
+      })
+    },
+
+    refreshBetPic(id){
+      this.DialogBetLogin.form.CodePicUrl = this.getBetCodePicUrl(id, true)
+    },
+    refreshAgentPic(id){
+      this.DialogAgentLogin.form.CodePicUrl = this.getAgentCodePicUrl(id, true)
     },
     getC(){
       let query = {LotteryType:this.LotteryTInfo.LotteryType}
@@ -788,51 +731,151 @@ export default {
       })
     },
     autoRefreshData(){
+
       this.RefreshData.CurResultSecond++
       if (this.RefreshData.CurResultSecond > 1000000){
-        this.RefreshData.CurResultSecond = 0
-      }
-      let isGetC = false
-      if (this.RefreshData.CurResultSecond % this.RefreshData.MaxCurResultSecond==0) {
-        isGetC = true
-        this.getC()
+        this.RefreshData.CurResultSecond = 1
       }
 
-      this.RefreshData.ReloadSiteUserDataSecond++
-      if (this.RefreshData.ReloadSiteUserDataSecond>this.RefreshData.ReloadSiteUserDataMaxSecond){
-        this.RefreshData.ReloadSiteUserDataSecond = 0
-        this.getSiteInfoList()
-      }
-
-      if (this.RefreshData.CurResultSecond % this.RefreshData.CountdownSecond==0) {
-        if (this.C.S>0) {
-          this.C.S = this.C.S -1
-        }
-        if  (this.C.S==0 && isGetC==false&&this.C.HasLogin) {
-          this.getC()
-        }
+      this.RefreshData.AgentData.Second++
+      if (this.RefreshData.CurResultSecond % this.RefreshData.AgentData.MaxSecond==0) {
+        this.loadAgentBetData()
+        this.RefreshData.AgentData.Second = 0
       }
     },
-    reloadResultHistory(){
-      const query ={
-        LotteryType:this.LotteryTInfo.LotteryType
+    onClickBet(){
+      let arrBetData = []
+      for (let i = 1; i <50 ; i++) {
+        if (this.layout1[i].V>0){
+          arrBetData.push(this.layout1[i])
+        }
       }
-      GetResultHistory(query).then(response => {
+      if( arrBetData.length==0) {
+        this.$q.notify("最少有一个金额大于0")
+        return
+      }
+      let BetData =JSON.stringify(arrBetData)
+      let LoConfig =JSON.stringify(this.ConfigData)
+
+      let query = {BetData:BetData,LoConfig}
+      Bet(query).then(response => {
         const { code, msg, obj } = response
-        if (code==200) {
-          this.ResultHistoryInfo.Data = obj
+        if (code==200){
+          this.loadAgentBetData()
+          this.$q.notify("投注成功")
+        } else {
+          this.$q.notify("投注失败:"+msg)
         }
       }).catch(error => {
         this.$q.notify(error)
       })
     },
+    onShowEditDialogAgent(){
+      this.EditDialogAgent.Title = `修改代理信息`
+      this.EditDialogAgent.Form = {...this.AgentUserInfo.UserData}
+      this.EditDialogAgent.Visible = true
+    },
+    onShowEditDialogBet(){
+      this.EditDialogBet.Title = `修改会员信息`
+      this.EditDialogBet.Form = {...this.BetUserInfo.UserData}
+      this.EditDialogBet.Visible = true
+    },
+    onClickSaveAgent(){
+      UpdateAgentUser(this.EditDialogAgent.Form).then(response => {
+        const { code, msg, obj } = response
+        if (code==200){
+          this.loadAgentUser()
+          this.EditDialogAgent.Visible = false
+        } else {
+          this.$q.notify(msg)
+        }
+      }).catch(error => {
+        this.$q.notify(error)
+      })
+    },
+
+    onClickSaveBet(){
+      UpdateBetUser(this.EditDialogBet.Form).then(response => {
+        const { code, msg, obj } = response
+        if (code==200){
+          this.loadBetUser()
+          this.EditDialogBet.Visible = false
+        } else {
+          this.$q.notify(msg)
+        }
+      }).catch(error => {
+        this.$q.notify(error)
+      })
+    },
+    changeConfigDataBetWay(value){
+      let query = {BetWay:value}
+      this.updateConfig(query,"")
+    },
+
+    changeConfigDataRateWay(value){
+      let query = {RateWay:value}
+      this.updateConfig(query,"")
+    },
+    changeConfigDataRate(value){
+      let query = {Rate:value}
+      this.updateConfig(query,"")
+    },
+
+    changeConfigDataStock(value){
+      let query = {Stock:value}
+      this.updateConfig(query,"")
+
+    },
+    changeConfigDataLotteryType(value){
+      let query = {LotteryType:value}
+      this.updateConfig(query,"")
+    },
+    loadConfig(){
+      let query = {}
+      GetConfig(query).then(response => {
+        const { code, msg, obj } = response
+        if (code==200) {
+          this.ConfigData = obj
+        } else {
+        }
+      }).catch(error => {
+        this.$q.notify(error)
+      })
+    },
+    onClickR(){
+      this.loadAgentBetData()
+      this.RefreshData.AgentData.Second= 0
+      // this.
+    },
+    updateConfig(query, msgOK){
+      SaveConfig(query).then(response => {
+        const { code, msg, obj } = response
+        if (code==200) {
+          if (msgOK!="") {
+            this.$q.notify(msgOK)
+          }
+        } else {
+          this.$q.notify(msg)
+        }
+        this.loadAgentBetData()
+      }).catch(error => {
+      })
+    },
+    updateAllConfig(){
+      SaveConfig(this.ConfigData).then(response => {
+        const { code, msg, obj } = response
+        if (code==200) {
+        } else {
+          this.$q.notify(msg)
+        }
+      }).catch(error => {
+      })
+    },
   },
   watch:{
     'C.L':function (v){
-      this.reloadResultHistory()
     },
     'C.LotteryType':function (v){
-      this.reloadResultHistory()
     }
   },
   mounted() {
@@ -840,7 +883,7 @@ export default {
       clearInterval(this.RefreshData.refreshDataTimer)
       this.RefreshData.refreshDataTimer = null;
     }
-    this.RefreshData.refreshDataTimer = setInterval(()=>{this.autoRefreshData()},500);
+    this.RefreshData.refreshDataTimer = setInterval(()=>{this.autoRefreshData()},1000);
   },
 
   unmounted() {
@@ -849,16 +892,20 @@ export default {
   },
   created() {
     this.getC()
+    this.loadConfig()
+    this.loadAgentUser()
+    this.loadBetUser()
     this.iniLayout1()
-    this.getNumComparisonInfo()
-    this.iniBetM()
-    this.getSiteInfoList()
+    this.loadAgentBetData()
   }
 
 }
 </script>
 
 <style scoped lang="scss">
+  .input_title {
+    font-size: 14px;
+  }
   .example-row-equal-width {
     .row > div{
       border: 1px solid
@@ -867,6 +914,10 @@ export default {
       margin-top: -1px
     }
   }
+  .input-row-equal-width{
+    border: 1px solid
+  }
+
 
   .num1,.num01, .num2,.num02, .num7,.num07, .num8,.num08, .num12, .num13, .num18, .num19, .num23, .num24, .num29, .num30, .num34, .num35, .num40, .num45, .num46{
     width: 32px;
@@ -882,6 +933,7 @@ export default {
     font-size: 22px;
     //border-radius: 50%;
   }
+
 
   .num3,.num03, .num4,.num04, .num9,.num09, .num10, .num14, .num15, .num20, .num25, .num26, .num31, .num36, .num37, .num41, .num42, .num47, .num48{
     width: 32px;
@@ -933,8 +985,29 @@ export default {
     height: calc(100vh - 420px - 80px - 20px );
   }
 
-  .aaabb{
+  .bet_m{
+    margin: 0  0px;
 
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: 12px;
+    align-content: center;
+    text-align: right;
+    background-color: #DDD;
+    color:black;
+    width: 60px
+  }
+
+  .bet_m2{
+    margin: 0  0px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: 12px;
+    align-content: center;
+    text-align: right;
+    background-color: #DDD;
+    color:black;
+    width: 55px
   }
 
 </style>

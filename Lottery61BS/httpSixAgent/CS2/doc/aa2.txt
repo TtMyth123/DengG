@@ -1,0 +1,357 @@
+{
+	"code": 0,
+	"msg": "ok",
+	"data": {
+		"Items": {
+			"tmtot": {
+				"TM-A-3": {
+					"Money": 12.7,
+					"WinLost": 300.2,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 12,
+					"JsPos": 1
+				},
+				"TM-A-1": {
+					"Money": 11.5,
+					"WinLost": 356.2,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 11,
+					"JsPos": 1
+				},
+				"TM-A-2": {
+					"Money": 17.3,
+					"WinLost": 82.8,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 17,
+					"JsPos": 1
+				},
+				"TM-A-4": {
+					"Money": 26.9,
+					"WinLost": -375.3,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 26,
+					"JsPos": 1
+				},
+				"TM-A-5": {
+					"Money": 13.8,
+					"WinLost": 248.8,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 13,
+					"JsPos": 1
+				},
+				"TM-A-6": {
+					"Money": 21.5,
+					"WinLost": -121.2,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 21,
+					"JsPos": 1
+				},
+				"TM-A-7": {
+					"Money": 3.7,
+					"WinLost": 727.7,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 3,
+					"JsPos": 1
+				},
+				"TM-A-8": {
+					"Money": 17.3,
+					"WinLost": 81.1,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 17,
+					"JsPos": 1
+				},
+				"TM-A-9": {
+					"Money": 24.2,
+					"WinLost": -247.5,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 24,
+					"JsPos": 1
+				},
+				"TM-A-10": {
+					"Money": 20.7,
+					"WinLost": -80.4,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 20,
+					"JsPos": 1
+				},
+				"TM-A-11": {
+					"Money": 17.4,
+					"WinLost": 77.8,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 17,
+					"JsPos": 1
+				},
+				"TM-A-12": {
+					"Money": 36.2,
+					"WinLost": -814.2,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 36,
+					"JsPos": 1
+				},
+				"TM-A-13": {
+					"Money": 10.0,
+					"WinLost": 429.8,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 9,
+					"JsPos": 1
+				},
+				"TM-A-14": {
+					"Money": 34.5,
+					"WinLost": -738.2,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 34,
+					"JsPos": 1
+				},
+				"TM-A-15": {
+					"Money": 14.9,
+					"WinLost": 196.6,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 14,
+					"JsPos": 1
+				},
+				"TM-A-16": {
+					"Money": 26.3,
+					"WinLost": -345.4,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 26,
+					"JsPos": 1
+				},
+				"TM-A-17": {
+					"Money": 9.2,
+					"WinLost": 465.9,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 9,
+					"JsPos": 1
+				},
+				"TM-A-18": {
+					"Money": 20.5,
+					"WinLost": -72.5,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 20,
+					"JsPos": 1
+				},
+				"TM-A-19": {
+					"Money": 11.4,
+					"WinLost": 363.8,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 11,
+					"JsPos": 1
+				},
+				"TM-A-20": {
+					"Money": 11.9,
+					"WinLost": 336.0,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 11,
+					"JsPos": 1
+				},
+				"TM-A-21": {
+					"Money": 21.4,
+					"WinLost": -114.0,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 21,
+					"JsPos": 1
+				},
+				"TM-A-22": {
+					"Money": 28.5,
+					"WinLost": -452.3,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 28,
+					"JsPos": 1
+				},
+				"TM-A-23": {
+					"Money": 18.8,
+					"WinLost": 8.9,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 18,
+					"JsPos": 1
+				},
+				"TM-A-24": {
+					"Money": 28.1,
+					"WinLost": -434.4,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 28,
+					"JsPos": 1
+				},
+				"TM-A-25": {
+					"Money": 17.4,
+					"WinLost": 77.3,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 17,
+					"JsPos": 1
+				},
+				"TM-A-26": {
+					"Money": 25.7,
+					"WinLost": -316.3,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 25,
+					"JsPos": 1
+				},
+				"TM-A-27": {
+					"Money": 4.2,
+					"WinLost": 703.4,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 4,
+					"JsPos": 1
+				},
+				"TM-A-28": {
+					"Money": 26.2,
+					"WinLost": -343.0,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 26,
+					"JsPos": 1
+				},
+				"TM-A-29": {
+					"Money": 7.2,
+					"WinLost": 560.5,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 7,
+					"JsPos": 1
+				},
+				"TM-A-30": {
+					"Money": 22.8,
+					"WinLost": -179.9,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 22,
+					"JsPos": 1
+				},
+				"TM-A-31": {
+					"Money": 19.4,
+					"WinLost": -17.1,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 19,
+					"JsPos": 1
+				},
+				"TM-A-32": {
+					"Money": 16.4,
+					"WinLost": 125.1,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 16,
+					"JsPos": 1
+				},
+				"TM-A-33": {
+					"Money": 21.5,
+					"WinLost": -118.7,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 21,
+					"JsPos": 1
+				},
+				"TM-A-34": {
+					"Money": 13.0,
+					"WinLost": 285.9,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 12,
+					"JsPos": 1
+				},
+				"TM-A-35": {
+					"Money": 20.5,
+					"WinLost": -73.4,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 20,
+					"JsPos": 1
+				},
+				"TM-A-36": {
+					"Money": 38.6,
+					"WinLost": -932.5,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 38,
+					"JsPos": 1
+				},
+				"TM-A-37": {
+					"Money": 25.5,
+					"WinLost": -307.9,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 25,
+					"JsPos": 1
+				},
+				"TM-A-38": {
+					"Money": 17.2,
+					"WinLost": 86.9,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 17,
+					"JsPos": 1
+				},
+				"TM-A-39": {
+					"Money": 17.3,
+					"WinLost": 79.8,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 17,
+					"JsPos": 1
+				},
+				"TM-A-40": {
+					"Money": 30.0,
+					"WinLost": -524.0,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 30,
+					"JsPos": 1
+				},
+				"TM-A-41": {
+					"Money": 22.8,
+					"WinLost": -179.6,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 22,
+					"JsPos": 1
+				},
+				"TM-A-42": {
+					"Money": 21.3,
+					"WinLost": -106.7,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 21,
+					"JsPos": 1
+				},
+				"TM-A-43": {
+					"Money": 2.3,
+					"WinLost": 795.1,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 2,
+					"JsPos": 1
+				},
+				"TM-A-44": {
+					"Money": 2.3,
+					"WinLost": 792.9,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 2,
+					"JsPos": 1
+				},
+				"TM-A-45": {
+					"Money": 20.3,
+					"WinLost": -60.2,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 20,
+					"JsPos": 1
+				},
+				"TM-A-46": {
+					"Money": 7.3,
+					"WinLost": 558.6,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 7,
+					"JsPos": 1
+				},
+				"TM-A-47": {
+					"Money": 24.9,
+					"WinLost": -279.9,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 24,
+					"JsPos": 1
+				},
+				"TM-A-48": {
+					"Money": 36.5,
+					"WinLost": -828.4,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 36,
+					"JsPos": 1
+				},
+				"TM-A-49": {
+					"Money": 9.3,
+					"WinLost": 459.7,
+					"BuhuoedAmount": 0.0,
+					"BuhuoAmount": 9,
+					"JsPos": 1
+				}
+			}
+		},
+		"Total": {
+			"tmtot": 0
+		},
+		"Betinfo": {}
+	}
+}
