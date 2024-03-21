@@ -466,6 +466,7 @@ export default {
         } else {
         }
       }).catch(error => {
+        this.$q.notify(error)
       })
     },
     loadBetUser(){
@@ -477,14 +478,16 @@ export default {
         } else {
         }
       }).catch(error => {
+        this.$q.notify(error)
       })
     },
     loadAgentBetData(){
       let query = {AgentId:this.AgentUserInfo.UserData.Id}
       GetAndSaveNumData(query).then(response => {
         const { code, msg, obj } = response
-        if (code==200) { 
+        if (code==200) {
           if(obj.Msg!=""){
+            this.AgentUserInfo.UserData.IsLogin = false
             this.$q.notify(obj.Msg)
           }
           this.AgentBetData = obj.Data
@@ -494,6 +497,7 @@ export default {
           this.$q.notify(msg)
         }
       }).catch(error => {
+        this.$q.notify(error)
       })
     },
     onB(i){
@@ -728,6 +732,7 @@ export default {
         } else {
         }
       }).catch(error => {
+        this.$q.notify(error)
       })
     },
     autoRefreshData(){
@@ -859,6 +864,7 @@ export default {
         }
         this.loadAgentBetData()
       }).catch(error => {
+        this.$q.notify(error)
       })
     },
     updateAllConfig(){
@@ -869,6 +875,7 @@ export default {
           this.$q.notify(msg)
         }
       }).catch(error => {
+        this.$q.notify(error)
       })
     },
   },

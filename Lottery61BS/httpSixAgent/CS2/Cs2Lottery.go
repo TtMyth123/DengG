@@ -336,6 +336,9 @@ func (this *Cs2Lottery) SaveNumData(v map[string]interface{}) (map[string]interf
 	mpGetOriginalData["OriginalQueryDataP"] = aOriginalQueryDataP
 	mpOriginalData, e := this.GetOriginalData(mpGetOriginalData)
 	if e != nil {
+		if !this.CheckLogin(v) {
+			this.UpdateLoginState2Db(false)
+		}
 		return nil, e
 	}
 

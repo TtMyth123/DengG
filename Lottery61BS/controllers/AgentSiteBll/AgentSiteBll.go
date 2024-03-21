@@ -22,6 +22,8 @@ func GetAddLottery(Id int64) (base.ILottery, bool) {
 		if e != nil {
 			return l, false
 		}
+		aSiteUserInfo.IsLogin = 0
+		aSiteUserInfo.Update(nil, "IsLogin")
 
 		lottery := manager.NewSixLottery(aSiteUserInfo, true)
 		GInstance.AddAgentLottery(Id, lottery)
