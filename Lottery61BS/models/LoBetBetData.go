@@ -58,16 +58,18 @@ func (this *LoBetBetData) AddUpdate(o orm.Ormer, cols ...string) error {
 		o = orm.NewOrm()
 	}
 	//_, e := o.InsertOrUpdate(this, "id")
-	aData := &LoBetBetData{}
-	e := o.QueryTable(this).Filter("SysId", this.SysId).Filter("Num", this.Num).
-		Filter("UserId", this.UserId).Filter("LotteryT", this.LotteryT).
-		One(aData)
+	aData := make([]LoBetBetData, 0)
+	c, e := o.QueryTable(this).Filter("SysId", this.SysId).Filter("Num", this.Num).
+		Filter("UserId", this.UserId).Filter("LotteryT", this.LotteryT).Filter("CycleId", this.CycleId).
+		All(&aData)
 	if e == nil {
-		this.Id = aData.Id
-		this.BetM = this.BetM + aData.BetM
-		e = this.Update(o, cols...)
-	} else {
-		e = this.Add(o)
+		if c == 0 {
+			e = this.Add(o)
+		} else {
+			this.Id = aData[0].Id
+			this.BetM = this.BetM + aData[0].BetM
+			e = this.Update(o, cols...)
+		}
 	}
 
 	return e

@@ -5,6 +5,7 @@ go 1.18
 require (
 	github.com/TtMyth123/kit v0.0.0-20240317044734-867365494368
 	github.com/astaxie/beego v1.12.3
+	github.com/go-sql-driver/mysql v1.5.0
 	github.com/gorilla/websocket v1.5.1
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible
 	github.com/opesun/goquery v0.0.0-20160908163916-0d77e43213cd

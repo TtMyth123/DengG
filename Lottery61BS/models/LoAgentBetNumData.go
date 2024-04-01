@@ -63,15 +63,18 @@ func (this *LoAgentBetNumData) AddUpdate(o orm.Ormer, cols ...string) error {
 	if o == nil {
 		o = orm.NewOrm()
 	}
-	aData := &LoAgentBetNumData{}
-	e := o.QueryTable(this).Filter("SysId", this.SysId).Filter("Num", this.Num).
+	//aData := &LoAgentBetNumData{}
+	aData := make([]LoAgentBetNumData, 0)
+	c, e := o.QueryTable(this).Filter("SysId", this.SysId).Filter("Num", this.Num).
 		Filter("AgentUserId", this.AgentUserId).Filter("Stock", this.Stock).Filter("LotteryT", this.LotteryT).
-		One(aData)
+		All(&aData)
 	if e == nil {
-		this.Id = aData.Id
-		e = this.Update(o, cols...)
-	} else {
-		e = this.Add(o)
+		if c == 0 {
+			e = this.Add(o)
+		} else {
+			this.Id = aData[0].Id
+			e = this.Update(o, cols...)
+		}
 	}
 
 	return e

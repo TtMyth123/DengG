@@ -76,7 +76,7 @@ LEFT JOIN
 (select aa.num, sum(aa.bet_m ) bet_m from lo_bet_bet_data aa, lo_bet_user bb, lo_lottery_type cc where 
 	(aa.cycle_id=cc.cycle_id and aa.lottery_t=cc.id and aa.user_id = bb.id and aa.sys_id=? and aa.lottery_t=?  ) 
 group by num) c on (a.num = c.num)
-ORDER BY b.bet_m DESC`)
+ORDER BY b.bet_m DESC, a.num `)
 	sqlArgs = append(sqlArgs,
 		SysId, loConfig.LotteryType, loConfig.Stock,
 		SysId, loConfig.LotteryType,
@@ -95,18 +95,22 @@ ORDER BY b.bet_m DESC`)
 	return newData, e
 }
 
-func GetAndSaveNumData(AgentId int64, mpP map[string]interface{}) (interface{}, error) {
-
+func GetAndSaveNumData(AgentId, IsSave int64, mpP map[string]interface{}) (interface{}, error) {
 	lottery, ok := AgentSiteBll.GetAddLottery(AgentId)
 	if !ok {
 		return nil, fmt.Errorf("没有对应的服务")
 	}
-	_, e := lottery.SaveNumData(mpP)
+
 	mpData := make(map[string]interface{})
 	mpData["Msg"] = ""
-	if e != nil {
-		mpData["Msg"] = e.Error()
+	if IsSave != 0 {
+		_, e := lottery.SaveNumData(mpP)
+
+		if e != nil {
+			mpData["Msg"] = e.Error()
+		}
 	}
+
 	data, e := GetAgentBetData(lottery.GetUserInfo().SysId)
 	mpData["Data"] = data
 	return mpData, e

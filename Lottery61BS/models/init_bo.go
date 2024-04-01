@@ -26,4 +26,6 @@ func initDataBo(o orm.Ormer) {
 
 	InitLoBetType(o)
 	InitLoBetUser(o)
+
+	o.Raw(`DELETE from lo_agent_bet_num_data`).Exec()
 }

@@ -1,9 +1,9 @@
 package models
 
 import (
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
-
-	_ "github.com/mattn/go-sqlite3"
+	//_ "github.com/mattn/go-sqlite3"
 )
 
 func Init() {
@@ -23,5 +23,13 @@ func InitData() {
 }
 
 func initDatabase() {
-	initSQLiteDatabase()
+	dbType := beego.AppConfig.String("db_type")
+	switch dbType {
+	case "sqlite3":
+		initSQLiteDatabase()
+	case "mysql":
+		initMysqlDatabase()
+	default:
+		panic("有问题的数据库类型")
+	}
 }

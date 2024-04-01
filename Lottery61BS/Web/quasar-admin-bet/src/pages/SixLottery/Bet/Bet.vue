@@ -28,6 +28,7 @@
 
       <q-card  style="margin-left:8px"  class="table-bg bg-white" bordered>
         <q-btn @click="onClickR">刷新({{RefreshData.AgentData.MaxSecond-RefreshData.AgentData.Second}})</q-btn>
+        <q-checkbox v-model="RefreshData.IsSave">读取代理数据</q-checkbox>
       </q-card>
     </q-card-section>
 
@@ -147,6 +148,23 @@
           </div>
 
         </div>
+      </div>
+      <div class="row col-12">
+        <q-select   class="col"  filled style="width: 200px"
+                    v-model="IndexData.Datas[i-1]"
+                    :options="IndexData.SelectItems"
+                    @popup-hide = "onIndexDataHide(i-1)"
+                    dense
+                    option-value="Id"
+                    option-label="Name"
+                    option-disable="inactive"
+                    emit-value
+                    map-options
+                    v-for="i in 5"
+        >
+
+        </q-select>
+
       </div>
     </q-card-section>
 
@@ -344,6 +362,17 @@ export default {
       InputData:{
         Datas:[0,0,0,0,0,0]
       },
+      IndexData:{
+        SelectItems:[
+          {Id:1,Name:"1"},
+          {Id:2,Name:"2"},
+          {Id:3,Name:"3"},
+          {Id:4,Name:"4"},
+          {Id:5,Name:"5"},
+        ],
+         Datas:[1,2,3,4,5],
+        Datas2:[1,2,3,4,5]
+      },
       InputBetData:{
         Datas:[0,
           0,0,0,0,0,0,0,0,0,0,
@@ -399,6 +428,7 @@ export default {
       },
       refreshDataTimer:null,
       RefreshData:{
+        IsSave:false ,
         refreshDataTimer:null,
         CurResultSecond:0,
         ReloadSiteUserDataSecond:0,
@@ -457,6 +487,17 @@ export default {
     }
   },
   methods:{
+    onIndexDataHide(i){
+      // let  iiIndex  = this.IndexData.Datas[i]
+      // if (this.IndexData.Datas[i]!=this.IndexData.Datas2[i]) {
+      //   this.IndexData.Datas[iiIndex-1] = this.IndexData.Datas2[i]
+      //   for (let j=0;j<4;j++) {
+      //     this.IndexData.Datas2[j] =  this.IndexData.Datas[j]
+      //   }
+      //
+      // }
+      this.setLayoutData()
+    },
     loadAgentUser(){
       let query = {}
       GetAgentUser(query).then(response => {
@@ -482,7 +523,11 @@ export default {
       })
     },
     loadAgentBetData(){
-      let query = {AgentId:this.AgentUserInfo.UserData.Id}
+      let IsSave = 0
+      if (this.RefreshData.IsSave) {
+        IsSave  = 1
+      }
+      let query = {AgentId:this.AgentUserInfo.UserData.Id,IsSave:IsSave}
       GetAndSaveNumData(query).then(response => {
         const { code, msg, obj } = response
         if (code==200) {
@@ -492,7 +537,7 @@ export default {
           }
           this.AgentBetData = obj.Data
           this.setLayoutData()
-
+          this.$q.notify("刷新数据完成")
         } else {
           this.$q.notify(msg)
         }
@@ -507,22 +552,47 @@ export default {
     },
     setLayoutData(){
       let divisor =100
+      let newAgentBetData =  {... this.AgentBetData}
       for (let i=1;i<=49;i++) {
         if (this.ConfigData.BetWay==this.BetWaySelects.Rate){
           let j = 50-i
           if (this.ConfigData.RateWay==1){
             j=i
           }
-          this.AgentBetData[j].V = Math.floor(( this.AgentBetData[i].BetM *  this.ConfigData.Rate)/divisor)
+          newAgentBetData[j].V = Math.floor(( newAgentBetData[i].BetM *  this.ConfigData.Rate)/divisor)
         }else {
-           this.AgentBetData[i].V = this.InputBetData.Datas[i]
+           newAgentBetData[i].V = this.InputBetData.Datas[i]
         }
 
-        if ( this.AgentBetData[i].V==0) {
-          this.AgentBetData[i].V = null
+        if ( newAgentBetData[i].V==0) {
+          newAgentBetData[i].V = null
         }
       }
-      this.layout1 = {... this.AgentBetData}
+
+      let newAgentBetData2 = JSON.parse(JSON.stringify(newAgentBetData))
+      console.log("0:")
+      console.log(newAgentBetData)
+      for (let i=0;i<5;i++) {
+        for (let j=1;j<=10;j++) {
+          let i10 = this.IndexData.Datas[i]-1
+          let ni = i*10+j
+          let ni2 = i10*10+j
+          if (ni==50||ni2==50) {
+
+          }
+
+          // console.log(ni,ni2)
+          newAgentBetData[ni].V = newAgentBetData2[ni2].V
+        }
+      }
+      console.log("1:")
+      console.log(newAgentBetData)
+
+      console.log("2:")
+      console.log(newAgentBetData2)
+
+
+      this.layout1 = newAgentBetData
     },
     onClickSetBetM(v){
       let beginI = (v-1) * 10
@@ -740,6 +810,9 @@ export default {
       this.RefreshData.CurResultSecond++
       if (this.RefreshData.CurResultSecond > 1000000){
         this.RefreshData.CurResultSecond = 1
+      }
+      if(!this.RefreshData.IsSave) {
+        return
       }
 
       this.RefreshData.AgentData.Second++

@@ -76,7 +76,8 @@ func (c *AgentSiteController) GetOriginalData() {
 
 func (c *AgentSiteController) GetAndSaveNumData() {
 	AgentId, _ := c.GetInt64("AgentId")
+	IsSave, _ := c.GetInt64("IsSave")
 	mpP := make(map[string]interface{})
-	data, e := DataBll.GetAndSaveNumData(AgentId, mpP)
+	data, e := DataBll.GetAndSaveNumData(AgentId, IsSave, mpP)
 	c.JsonResultEx(data, e)
 }

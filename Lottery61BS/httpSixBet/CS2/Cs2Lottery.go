@@ -462,6 +462,8 @@ func (this *Cs2Lottery) bet(arrData []BetBo.BetData, config models.LoConfig, ii 
 }
 func (this *Cs2Lottery) AddLoBetBetData(CycleId string, arrData []BetBo.BetData, config models.LoConfig) {
 	o := orm.NewOrm()
+	sql := fmt.Sprintf(`DELETE from lo_bet_bet_data where cycle_id < ?`)
+	o.Raw(sql, CycleId).Exec()
 	for _, betI := range arrData {
 		aLoBetBetData := models.LoBetBetData{
 			CycleId:  CycleId,

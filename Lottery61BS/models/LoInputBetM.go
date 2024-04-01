@@ -60,14 +60,16 @@ func (this *LoInputBetM) AddUpdate(o orm.Ormer, cols ...string) error {
 	if o == nil {
 		o = orm.NewOrm()
 	}
-	aData := &LoInputBetM{}
-	e := o.QueryTable(this.TableName()).Filter("SysId", this.SysId).Filter("Num", this.Num).
-		One(aData)
+	aData := make([]LoInputBetM, 0)
+	c, e := o.QueryTable(this.TableName()).Filter("SysId", this.SysId).Filter("Num", this.Num).
+		All(&aData)
 	if e == nil {
-		this.Id = aData.Id
-		e = this.Update(o, cols...)
-	} else {
-		e = this.Add(o)
+		if c == 0 {
+			e = this.Add(o)
+		} else {
+			this.Id = aData[0].Id
+			e = this.Update(o, cols...)
+		}
 	}
 	return e
 }

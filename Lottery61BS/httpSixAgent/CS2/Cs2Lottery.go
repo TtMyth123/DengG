@@ -32,6 +32,7 @@ type Cs2Lottery struct {
 	UUID   string
 
 	mpLotteryData map[int64]*Cs2LotteryData
+	isSaveNumData bool
 }
 
 type Cs2LotteryData struct {
@@ -328,6 +329,13 @@ func (this *Cs2Lottery) ToMapNumData(v interface{}) map[string]models.LoAgentBet
 }
 
 func (this *Cs2Lottery) SaveNumData(v map[string]interface{}) (map[string]interface{}, error) {
+	if this.isSaveNumData {
+		return nil, nil
+	}
+	this.isSaveNumData = true
+	defer func() {
+		this.isSaveNumData = false
+	}()
 	aOriginalQueryDataP := this.getOriginalQueryDataP(v)
 	mpGetOriginalData := make(map[string]interface{})
 	if this.UserInfo.IsLogin == 0 {

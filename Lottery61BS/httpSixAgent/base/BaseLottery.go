@@ -65,6 +65,7 @@ func (receiver *Lottery) Login(v map[string]interface{}) (map[string]interface{}
 	return mpData, nil
 }
 func (receiver *Lottery) LoginOut(v map[string]interface{}) (map[string]interface{}, error) {
+	receiver.UserInfo.IsLogin = 0
 	mpData := make(map[string]interface{})
 
 	return mpData, nil
